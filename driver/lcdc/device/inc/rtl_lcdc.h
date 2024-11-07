@@ -24,27 +24,13 @@ extern "C" {
 /*============================================================================*
  *                        Header Files
  *============================================================================*/
-#include "utils/rtl_utils.h"
-#include "lcdc/inc/rtl_lcdc_dma.h"
-#if defined (CONFIG_SOC_SERIES_RTL87X2G)
-#include "lcdc/src/rtl87x2g/rtl_lcdc_handler_def.h"
-#include "lcdc/src/rtl87x2g/rtl_lcdc_dma_ll_def.h"
-#endif
+#include "rtl_lcdc_dma.h"
+#include "rtl_lcdc_handler_def.h"
+#include "rtl_lcdc_dma_ll_def.h"
 
 /*============================================================================*
  *                          Private Macros
  *============================================================================*/
-#undef  DISPLAY_CTRL_REG_BASE
-
-#if defined (CONFIG_SOC_SERIES_RTL87X2G)
-
-#define DISPLAY_CTRL_REG_BASE              0x40023000UL
-
-#elif defined RTL8763EP
-
-#define DISPLAY_CTRL_REG_BASE                0x40017000UL
-
-#endif
 #define LCDC_DMA_CHANNEL_REG_BASE           (DISPLAY_CTRL_REG_BASE + 0)
 #define LCDC_DMA_Channel0_BASE              (DISPLAY_CTRL_REG_BASE + 0x000)
 #define LCDC_DMA_REG_BASE                   (DISPLAY_CTRL_REG_BASE + 0x2c0)

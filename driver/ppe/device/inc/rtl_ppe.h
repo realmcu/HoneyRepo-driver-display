@@ -24,10 +24,7 @@ extern "C" {
 /*============================================================================*
  *                        Header Files
  *============================================================================*/
-#include "utils/rtl_utils.h"
-#if defined (CONFIG_SOC_SERIES_RTL87X2G)
-#include "ppe/src/rtl87x2g/rtl_ppe_def.h"
-#endif
+#include "rtl_ppe_def.h"
 
 /*============================================================================*
  *                          Private Macros
