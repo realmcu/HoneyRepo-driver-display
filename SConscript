@@ -32,13 +32,12 @@ if GetDepend(['CONFIG_REALTEK_PPE']):
 if GetDepend(['CONFIG_REALTEK_RAMLESS_QSPI']):
     src += ['driver/lcdc/device/src/rtl_common/rtl_ramless_qspi.c']
 
-if GetDepend(['CONFIG_REALTEK_IMDC']) :
-    src += ['driver/imdc/device/src/rtl_common/rtl_imdc.c']
-    src += ['driver/imdc/device/src/rtl_common/hal_imdc.c']
+if  GetDepend(['CONFIG_REALTEK_IMDC']) or GetDepend(['CONFIG_REALTEK_IDU']) :
+    src += ['driver/idu/device/src/rtl_common/rtl_imdc.c']
+    src += ['driver/idu/device/src/rtl_common/hal_imdc.c']
     if RTK_IC_TYPE == 'rtl87x2g':
-        src += ['driver/imdc/device/src/rtl87x2g/hal_imdc_int.c']
-        src += ['driver/imdc/device/src/rtl87x2g/rtl_imdc_int.c']
-        include_path += [
+        src += ['driver/idu/device/src/rtl87x2g/hal_imdc_int.c']
+        src += ['driver/idu/device/src/rtl87x2g/rtl_imdc_int.c']
 
 if GetDepend(['CONFIG_REALTEK_SEGCOM']):
     src += ['driver/segcom/device/src/rtl_common/rtl876x_segcom.c']
@@ -47,7 +46,8 @@ if GetDepend(['CONFIG_REALTEK_SEGCOM']):
 include_path += [cwd,
         cwd + '/driver/lcdc/device/inc',
         cwd + '/driver/lcdc/device/src/' + RTK_IC_TYPE,
-        cwd + '/driver/imdc/device/src/' + RTK_IC_TYPE,
+        cwd + '/driver/idu/device/inc',
+        cwd + '/driver/idu/device/src/' + RTK_IC_TYPE,
         cwd + '/driver/mipi/device/inc',
         cwd + '/driver/ppe/device/inc',
         cwd + '/driver/segcom/device/inc']
