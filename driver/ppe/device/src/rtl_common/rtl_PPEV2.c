@@ -5,9 +5,9 @@
 * \file     rtl_PPEV2.c
 * \brief    This file provides all the the PPE 2.0 firmware functions.
 * \details
-* \author   feihu wang
-* \date     2023-10-17
-* \version  v1.0
+* \author   astor zhang
+* \date     2024-11-12
+* \version  v1.1
 *********************************************************************************************************
 */
 
@@ -15,7 +15,6 @@
  *                        Header Files
  *============================================================================*/
 #include "rtl_PPEV2.h"
-#include "rtl_imdc.h"
 #include "string.h"
 #include "os_sync.h"
 #include "math.h"
@@ -1567,6 +1566,8 @@ PPEV2_err PPEV2_Blend_Multi(ppe_buffer_t *dst, ppe_buffer_t *src_1,
     return PPEV2_SUCCESS;
 }
 
+#if IDU_HANDSHAKE
+#include "rtl_imdc.h"
 PPEV2_err PPEV2_Blend_Handshake(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_rect_t *rect)
 {
     if (dst->address == NULL)
@@ -1715,6 +1716,7 @@ PPEV2_err PPEV2_Blend_Handshake(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_rect_t
     while (((PPEV2_REG_GLB_STATUS_TypeDef)PPEV2->REG_GLB_STATUS).b.run_state);
     return PPEV2_SUCCESS;
 }
+#endif
 
 void ppe_get_identity(ppe_matrix_t *matrix)
 {

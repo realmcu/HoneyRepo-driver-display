@@ -1582,6 +1582,29 @@ void LCDC_DMA_LinkList_Init(LCDC_DMALLI_InitTypeDef *LCDC_DMA_LLIConfig, void *L
 /**
  * rtl_lcdc.h
  *
+ * \brief  Force DMA use burst data transfer.
+ *
+ * \param[in] state: DMA burst fixed or not.
+ *            This parameter can be one of the following values:
+ *            \arg ENABLE: Force DMA use burst data transfer.
+ *            \arg DISABLE: DMA burst is not required.
+ *
+ * \return None.
+ *
+ * <b>Example usage</b>
+ * \code{.c}
+ *
+ * void driver_lcdc_init(void)
+ * {
+ *     LCDC_ForceBurst(ENABLE);
+ * }
+ * \endcode
+ */
+void LCDC_ForceBurst(FunctionalState new_state);
+
+/**
+ * rtl_lcdc.h
+ *
  * \brief  Enable or disable LCDC clock.
  *
  * \param[in] state: New state of LCDC clock.

@@ -45,7 +45,7 @@ void LCDC_Clock_Cfg(FunctionalState state)
     {
 #if defined (CONFIG_SOC_SERIES_RTL87X2G)
 //TODO
-#elif defined RTL8763EP
+#elif defined TARGET_RTL8773E
         uint32_t reg_value = *(uint32_t *)0x40000214;
         reg_value |= (BIT11 | BIT12);
         *(uint32_t *)0x40000214 = reg_value;
@@ -55,7 +55,7 @@ void LCDC_Clock_Cfg(FunctionalState state)
     {
 #if defined (CONFIG_SOC_SERIES_RTL87X2G)
 //TODO
-#elif defined RTL8763EP
+#elif defined TARGET_RTL8773E
         uint32_t reg_value = *(uint32_t *)0x40000214;
         reg_value &= ~(BIT11 | BIT12);
         *(uint32_t *)0x40000214 = reg_value;
