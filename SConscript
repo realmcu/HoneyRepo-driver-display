@@ -50,6 +50,7 @@ include_path += [cwd,
         cwd + '/driver/idu/device/src/' + RTK_IC_TYPE,
         cwd + '/driver/mipi/device/inc',
         cwd + '/driver/ppe/device/inc',
+        cwd + '/driver/ppe/device/src/' + RTK_IC_TYPE,
         cwd + '/driver/segcom/device/inc']
 
 
