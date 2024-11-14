@@ -28,7 +28,7 @@ if GetDepend(['CONFIG_REALTEK_LCDC_EDPI']) :
 if GetDepend(['CONFIG_REALTEK_LCDC']):
     src += ['driver/lcdc/device/src/rtl_common/rtl_lcdc.c']
 if GetDepend(['CONFIG_REALTEK_PPE']):
-    src += ['driver/ppe/device/src/rtl_common/rtl_ppe.c']
+    src += ['driver/ppe/device/src/rtl87x2g/rtl_ppe.c']
 if GetDepend(['CONFIG_REALTEK_RAMLESS_QSPI']):
     src += ['driver/lcdc/device/src/rtl_common/rtl_ramless_qspi.c']
 
@@ -49,8 +49,7 @@ include_path += [cwd,
         cwd + '/driver/idu/device/inc',
         cwd + '/driver/idu/device/src/' + RTK_IC_TYPE,
         cwd + '/driver/mipi/device/inc',
-        cwd + '/driver/ppe/device/inc',
-        cwd + '/driver/ppe/device/src/' + RTK_IC_TYPE,
+        cwd + '/driver/ppe/device/inc/' + RTK_IC_TYPE,
         cwd + '/driver/segcom/device/inc']
 
 
