@@ -1,7 +1,6 @@
 #include "os_mem.h"
 #include "string.h"
 #include "hal_idu.h"
-#include "hal_idu_int.h"
 #include "rtl_idu_int.h"
 #include "rtl_idu.h"
 
@@ -74,7 +73,7 @@ void hal_dma_copy(hal_idu_dma_info *info, uint8_t *src, uint8_t *dst)
     uint32_t start_address = (uint32_t)src;
     uint32_t dest_address = (uint32_t)dst;
     RCC_PeriphClockCmd(APBPeriph_GDMA, APBPeriph_GDMA_CLOCK, ENABLE);
-    GDMA_ChannelTypeDef *dma_channel = hal_idu_get_dma_channel_int(high_speed_dma);
+    GDMA_ChannelTypeDef *dma_channel = rtl_idu_get_dma_channel_int(high_speed_dma);
     GDMA_InitTypeDef RX_GDMA_InitStruct;
     /*--------------GDMA init-----------------------------*/
     GDMA_StructInit(&RX_GDMA_InitStruct);
@@ -129,7 +128,7 @@ void hal_dma_copy(hal_idu_dma_info *info, uint8_t *src, uint8_t *dst)
                 GDMA_LLIStruct[i].DAR = (uint32_t)dest_address + info->dst_stride * i;
                 GDMA_LLIStruct[i].LLP = (uint32_t)&GDMA_LLIStruct[i + 1];
                 /* configure low 32 bit of CTL register */
-                GDMA_LLIStruct[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(dma_channel);
+                GDMA_LLIStruct[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(dma_channel);
                 /* configure high 32 bit of CTL register */
                 if (total_size == 0)
                 {
@@ -224,7 +223,7 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
     IDU_struct_init.tx_fifo_dma_threshold     = IDU_TX_FIFO_DEPTH / 2;
     IDU_struct_init.rx_fifo_int_threshold     = dma_cfg->RX_FIFO_INT_threshold;
     IDU_struct_init.tx_fifo_int_threshold     = dma_cfg->TX_FIFO_INT_threshold;
-    hal_idu_hw_handshake_init(&IDU_struct_init);
+    rtl_idu_hw_handshake_init(&IDU_struct_init);
     IDU_Init(&IDU_struct_init);
 
 
@@ -233,8 +232,8 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
     /* Configure DMA */
     RCC_PeriphClockCmd(APBPeriph_GDMA, APBPeriph_GDMA_CLOCK, ENABLE);
     GDMA_InitTypeDef RX_GDMA_InitStruct;
-    GDMA_ChannelTypeDef *RX_DMA = hal_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
-    GDMA_ChannelTypeDef *TX_DMA = hal_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
+    GDMA_ChannelTypeDef *RX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
+    GDMA_ChannelTypeDef *TX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
     GDMA_LLIDef *RX_GDMA_LLIStruct;
     GDMA_LLIDef *TX_GDMA_LLIStruct;
     uint32_t rx_block_num = 0;
@@ -263,7 +262,7 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
         GDMA_DataSize_Word;                   // 32 bit width for source transaction
     RX_GDMA_InitStruct.GDMA_SourceAddr          = (uint32_t)start_line_address;
     RX_GDMA_InitStruct.GDMA_DestinationAddr     = (uint32_t)(&IDU->RX_FIFO);
-    hal_idu_rx_handshake_init(&RX_GDMA_InitStruct);
+    rtl_idu_rx_handshake_init(&RX_GDMA_InitStruct);
     if (rx_block_num)
     {
         RX_GDMA_LLIStruct = os_mem_alloc(RAM_TYPE_DATA_ON, sizeof(GDMA_LLIDef) * rx_block_num);
@@ -301,7 +300,7 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
                 RX_GDMA_LLIStruct[i].DAR = (uint32_t)(&IDU->RX_FIFO);
                 RX_GDMA_LLIStruct[i].LLP = (uint32_t)&RX_GDMA_LLIStruct[i + 1];
                 /* configure low 32 bit of CTL register */
-                RX_GDMA_LLIStruct[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(RX_DMA);
+                RX_GDMA_LLIStruct[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(RX_DMA);
                 /* configure high 32 bit of CTL register */
                 RX_GDMA_LLIStruct[i].CTL_HIGH = 65535;
             }
@@ -327,7 +326,7 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
         GDMA_DataSize_Word;                   // 32 bit width for source transaction
     TX_GDMA_InitStruct.GDMA_SourceAddr          = (uint32_t)(&IDU->TX_FIFO);
     TX_GDMA_InitStruct.GDMA_DestinationAddr     = (uint32_t)dma_cfg->output_buf;
-    hal_idu_tx_handshake_init(&TX_GDMA_InitStruct);
+    rtl_idu_tx_handshake_init(&TX_GDMA_InitStruct);
     if (tx_block_num)
     {
         TX_GDMA_LLIStruct = os_mem_alloc(RAM_TYPE_DATA_ON, sizeof(GDMA_LLIDef) * tx_block_num);
@@ -364,7 +363,7 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
                 TX_GDMA_LLIStruct[i].DAR = (uint32_t)dma_cfg->output_buf + info->dst_stride * i;
                 TX_GDMA_LLIStruct[i].LLP = (uint32_t)&TX_GDMA_LLIStruct[i + 1];
                 /* configure low 32 bit of CTL register */
-                TX_GDMA_LLIStruct[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(TX_DMA);
+                TX_GDMA_LLIStruct[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(TX_DMA);
                 /* configure high 32 bit of CTL register */
                 TX_GDMA_LLIStruct[i].CTL_HIGH = buffer_size;
             }
@@ -389,12 +388,12 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
         err =  IDU_ERROR_DECODE_FAIL;
     }
 
-    if (hal_idu_get_dma_busy_state(dma_cfg->RX_DMA_channel_num))
+    if (rtl_idu_get_dma_busy_state(dma_cfg->RX_DMA_channel_num))
     {
         GDMA_SuspendCmd(TX_DMA, ENABLE);
         GDMA_SuspendCmd(RX_DMA, ENABLE);
-        hal_idu_wait_dma_idle(RX_DMA);
-        hal_idu_wait_dma_idle(TX_DMA);
+        rtl_idu_wait_dma_idle(RX_DMA);
+        rtl_idu_wait_dma_idle(TX_DMA);
         GDMA_Cmd(dma_cfg->RX_DMA_channel_num, DISABLE);
         GDMA_Cmd(dma_cfg->TX_DMA_channel_num, DISABLE);
     }
@@ -423,7 +422,7 @@ bool hal_idu_decompress_rect(hal_idu_decompress_info *info, uint8_t *dst)
 
 void hal_dma_channel_init(uint8_t *high_speed_channel, uint8_t *low_speed_channel)
 {
-    hal_idu_channel_init_int(high_speed_channel, low_speed_channel);
+    rtl_idu_channel_init_int(high_speed_channel, low_speed_channel);
     high_speed_dma = *high_speed_channel;
     low_speed_dma = *low_speed_channel;
 }

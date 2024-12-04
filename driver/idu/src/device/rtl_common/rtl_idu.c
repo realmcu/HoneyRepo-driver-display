@@ -17,7 +17,6 @@
 #include "stdio.h"
 #include "rtl_idu.h"
 #include "rtl_idu_int.h"
-#include "hal_idu_int.h"
 
 /*============================================================================*
  *                           Public Functions
@@ -181,7 +180,7 @@ void IDU_Init(IDU_InitTypeDef *IDU_init_struct)
     IDU_CTL1_TypeDef idu_reg_0x04 = {.d32 = IDU->IDU_CTL1};
     idu_reg_0x04.b.head_throw_away_byte_num = IDU_struct_init->head_throw_away_byte_num;
     idu_reg_0x04.b.pic_pixel_size = IDU_struct_init->pic_pixel_size;
-    hal_idu_fill_hw_hs_reg_int(&idu_reg_0x04, IDU_struct_init);
+    rtl_idu_fill_hw_hs_reg_int(&idu_reg_0x04, IDU_struct_init);
     IDU->IDU_CTL1 = idu_reg_0x04.d32;
 
     IDU->PIC_RAW_WIDTH = IDU_struct_init->pic_raw_width;
@@ -304,7 +303,7 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
     IDU_struct_init.tx_fifo_dma_threshold     = IDU_TX_FIFO_DEPTH / 2;
     IDU_struct_init.rx_fifo_int_threshold     = dma_cfg->RX_FIFO_INT_threshold;
     IDU_struct_init.tx_fifo_int_threshold     = dma_cfg->TX_FIFO_INT_threshold;
-    hal_idu_hw_handshake_init(&IDU_struct_init);
+    rtl_idu_hw_handshake_init(&IDU_struct_init);
     IDU_Init(&IDU_struct_init);
 
 
@@ -315,8 +314,8 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
     /* Configure DMA */
     RCC_PeriphClockCmd(APBPeriph_GDMA, APBPeriph_GDMA_CLOCK, ENABLE);
     GDMA_InitTypeDef RX_GDMA_InitStruct;
-    GDMA_ChannelTypeDef *RX_DMA = hal_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
-    GDMA_ChannelTypeDef *TX_DMA = hal_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
+    GDMA_ChannelTypeDef *RX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
+    GDMA_ChannelTypeDef *TX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
 
     uint32_t rx_block_num = 0;
     if (DMA_compressed_data_size_word >= 65535)
@@ -344,7 +343,7 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
         GDMA_DataSize_Word;                   // 32 bit width for source transaction
     RX_GDMA_InitStruct.GDMA_SourceAddr          = (uint32_t)start_line_address;
     RX_GDMA_InitStruct.GDMA_DestinationAddr     = (uint32_t)(&IDU->RX_FIFO);
-    hal_idu_rx_handshake_init(&RX_GDMA_InitStruct);
+    rtl_idu_rx_handshake_init(&RX_GDMA_InitStruct);
 
     if (rx_block_num)
     {
@@ -382,7 +381,7 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
                 RX_GDMA_LLIStruct[i].DAR = (uint32_t)(&IDU->RX_FIFO);
                 RX_GDMA_LLIStruct[i].LLP = (uint32_t)&RX_GDMA_LLIStruct[i + 1];
                 /* configure low 32 bit of CTL register */
-                RX_GDMA_LLIStruct[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(RX_DMA);
+                RX_GDMA_LLIStruct[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(RX_DMA);
                 /* configure high 32 bit of CTL register */
                 RX_GDMA_LLIStruct[i].CTL_HIGH = 65535;
             }
@@ -416,7 +415,7 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
         GDMA_DataSize_Word;                   // 32 bit width for source transaction
     TX_GDMA_InitStruct.GDMA_SourceAddr          = (uint32_t)(&IDU->TX_FIFO);
     TX_GDMA_InitStruct.GDMA_DestinationAddr     = (uint32_t)dma_cfg->output_buf;
-    hal_idu_tx_handshake_init(&TX_GDMA_InitStruct);
+    rtl_idu_tx_handshake_init(&TX_GDMA_InitStruct);
     if (tx_block_num)
     {
         TX_GDMA_InitStruct.GDMA_BufferSize = 65535;
@@ -453,7 +452,7 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
                 TX_GDMA_LLIStruct[i].DAR = (uint32_t)dma_cfg->output_buf + 65535 * 4 * i;
                 TX_GDMA_LLIStruct[i].LLP = (uint32_t)&TX_GDMA_LLIStruct[i + 1];
                 /* configure low 32 bit of CTL register */
-                TX_GDMA_LLIStruct[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(TX_DMA);
+                TX_GDMA_LLIStruct[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(TX_DMA);
                 /* configure high 32 bit of CTL register */
                 TX_GDMA_LLIStruct[i].CTL_HIGH = 65535;
             }
@@ -476,12 +475,12 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
     {
         err =  IDU_ERROR_DECODE_FAIL;
     }
-    if (hal_idu_get_dma_busy_state(dma_cfg->RX_DMA_channel_num))
+    if (rtl_idu_get_dma_busy_state(dma_cfg->RX_DMA_channel_num))
     {
         GDMA_SuspendCmd(TX_DMA, ENABLE);
         GDMA_SuspendCmd(RX_DMA, ENABLE);
-        hal_idu_wait_dma_idle(RX_DMA);
-        hal_idu_wait_dma_idle(TX_DMA);
+        rtl_idu_wait_dma_idle(RX_DMA);
+        rtl_idu_wait_dma_idle(TX_DMA);
         GDMA_Cmd(dma_cfg->RX_DMA_channel_num, DISABLE);
         GDMA_Cmd(dma_cfg->TX_DMA_channel_num, DISABLE);
     }
@@ -571,7 +570,7 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
     IDU_struct_init.tx_fifo_dma_threshold     = IDU_TX_FIFO_DEPTH / 2;
     IDU_struct_init.rx_fifo_int_threshold     = dma_cfg->RX_FIFO_INT_threshold;
     IDU_struct_init.tx_fifo_int_threshold     = dma_cfg->TX_FIFO_INT_threshold;
-    hal_idu_hw_handshake_init(&IDU_struct_init);
+    rtl_idu_hw_handshake_init(&IDU_struct_init);
     IDU_Init(&IDU_struct_init);
 
 
@@ -582,8 +581,8 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
     /* Configure DMA */
     RCC_PeriphClockCmd(APBPeriph_GDMA, APBPeriph_GDMA_CLOCK, ENABLE);
     GDMA_InitTypeDef RX_GDMA_InitStruct;
-    GDMA_ChannelTypeDef *RX_DMA = hal_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
-    GDMA_ChannelTypeDef *TX_DMA = hal_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
+    GDMA_ChannelTypeDef *RX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
+    GDMA_ChannelTypeDef *TX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
     uint32_t rx_block_num = 0;
     if (DMA_compressed_data_size_word >= 65535)
     {
@@ -610,7 +609,7 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
         GDMA_DataSize_Word;                   // 32 bit width for source transaction
     RX_GDMA_InitStruct.GDMA_SourceAddr          = (uint32_t)start_line_address;
     RX_GDMA_InitStruct.GDMA_DestinationAddr     = (uint32_t)(&IDU->RX_FIFO);
-    hal_idu_rx_handshake_init(&RX_GDMA_InitStruct);
+    rtl_idu_rx_handshake_init(&RX_GDMA_InitStruct);
     if (rx_block_num)
     {
         RX_GDMA_InitStruct.GDMA_BufferSize = 65535;
@@ -647,7 +646,7 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
                 RX_GDMA_LLIStruct[i].DAR = (uint32_t)(&IDU->RX_FIFO);
                 RX_GDMA_LLIStruct[i].LLP = (uint32_t)&RX_GDMA_LLIStruct[i + 1];
                 /* configure low 32 bit of CTL register */
-                RX_GDMA_LLIStruct[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(RX_DMA);
+                RX_GDMA_LLIStruct[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(RX_DMA);
                 /* configure high 32 bit of CTL register */
                 RX_GDMA_LLIStruct[i].CTL_HIGH = 65535;
             }
@@ -681,7 +680,7 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
         GDMA_DataSize_Word;                   // 32 bit width for source transaction
     TX_GDMA_InitStruct.GDMA_SourceAddr          = (uint32_t)(&IDU->TX_FIFO);
     TX_GDMA_InitStruct.GDMA_DestinationAddr     = (uint32_t)dma_cfg->output_buf;
-    hal_idu_tx_handshake_init(&TX_GDMA_InitStruct);
+    rtl_idu_tx_handshake_init(&TX_GDMA_InitStruct);
     if (tx_block_num)
     {
         TX_GDMA_InitStruct.GDMA_BufferSize = 65535;
@@ -718,7 +717,7 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
                 TX_GDMA_LLIStruct[i].DAR = (uint32_t)dma_cfg->output_buf + 65535 * 4 * i;
                 TX_GDMA_LLIStruct[i].LLP = (uint32_t)&TX_GDMA_LLIStruct[i + 1];
                 /* configure low 32 bit of CTL register */
-                TX_GDMA_LLIStruct[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(TX_DMA);
+                TX_GDMA_LLIStruct[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(TX_DMA);
                 /* configure high 32 bit of CTL register */
                 TX_GDMA_LLIStruct[i].CTL_HIGH = 65535;
             }
@@ -785,6 +784,6 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
 
 IDU_ERROR IDU_Decode_Direct(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma_cfg)
 {
-    return hal_idu_decode_direct_int(file, range, dma_cfg, RX_GDMA_LLIStruct);
+    return rtl_idu_decode_direct_int(file, range, dma_cfg, RX_GDMA_LLIStruct);
 }
 /******************* (C) COPYRIGHT 2023 Realtek Semiconductor Corporation *****END OF FILE****/

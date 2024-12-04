@@ -1,44 +1,65 @@
 #include "rtl_idu.h"
 #include "rtl_idu_int.h"
-#include "hal_idu_int.h"
 #include "stdio.h"
 
-uint32_t hal_idu_get_dma_ctl_low_int(GDMA_ChannelTypeDef *dma)
+void rtl_idu_channel_init_int(uint8_t *high_speed_channel, uint8_t *low_speed_channel)
+{
+    *high_speed_channel = 0xA5;
+    *low_speed_channel = 0xA5;
+    if (!GDMA_channel_request(high_speed_channel, NULL, true))
+    {
+        assert_param(*high_speed_channel != 0xA5);
+        return;
+    }
+    if (!GDMA_channel_request(low_speed_channel, NULL, false))
+    {
+        assert_param(*low_speed_channel != 0xA5);
+        return;
+    }
+    return;
+}
+
+GDMA_ChannelTypeDef *rtl_idu_get_dma_channel_int(uint8_t channel_num)
+{
+    return DMA_CH_BASE(channel_num);
+}
+
+uint32_t rtl_idu_get_dma_ctl_low_int(GDMA_ChannelTypeDef *dma)
 {
     return dma->CTL_LOW;
 }
 
-bool hal_idu_get_dma_busy_state(uint8_t channel_num)
+bool rtl_idu_get_dma_busy_state(uint8_t channel_num)
 {
     return (GDMA0->ChEnReg & (0x01 << channel_num));
 }
 
-void hal_idu_wait_dma_idle(GDMA_ChannelTypeDef *dma)
+void rtl_idu_wait_dma_idle(GDMA_ChannelTypeDef *dma)
 {
     while (!(dma->CFG_LOW & BIT0));
 }
 
-void hal_idu_rx_handshake_init(GDMA_InitTypeDef *init_struct)
+void rtl_idu_rx_handshake_init(GDMA_InitTypeDef *init_struct)
 {
     init_struct->GDMA_DestHandshake = GDMA_Handshake_RTZIP_RX;
 }
 
-void hal_idu_tx_handshake_init(GDMA_InitTypeDef *init_struct)
+void rtl_idu_tx_handshake_init(GDMA_InitTypeDef *init_struct)
 {
     init_struct->GDMA_SourceHandshake = GDMA_Handshake_RTZIP_TX;
 }
 
-void hal_idu_hw_handshake_init(IMDC_InitTypeDef *init_struct)
+void rtl_idu_hw_handshake_init(IMDC_InitTypeDef *init_struct)
 {
     init_struct->hw_handshake = IMDC_HW_HANDSHAKE_DMA;
 }
 
-void hal_idu_fill_hw_hs_reg_int(IMDC_CTL1_TypeDef *reg, IMDC_InitTypeDef *IMDC_init_struct)
+void rtl_idu_fill_hw_hs_reg_int(IMDC_CTL1_TypeDef *reg, IMDC_InitTypeDef *IMDC_init_struct)
 {
     reg->b.hw_handshake_mux = IMDC_init_struct->hw_handshake;
 }
 
-IMDC_ERROR hal_idu_decode_direct_int(uint8_t *file, IMDC_decode_range *range,
+IMDC_ERROR rtl_idu_decode_direct_int(uint8_t *file, IMDC_decode_range *range,
                                       IMDC_DMA_config *dma_cfg, GDMA_LLIDef *RX_LLI)
 {
     uint32_t decompress_start_line;
@@ -124,8 +145,8 @@ IMDC_ERROR hal_idu_decode_direct_int(uint8_t *file, IMDC_decode_range *range,
     /* Configure DMA */
     RCC_PeriphClockCmd(APBPeriph_GDMA, APBPeriph_GDMA_CLOCK, ENABLE);
     GDMA_InitTypeDef RX_GDMA_InitStruct;
-    GDMA_ChannelTypeDef *RX_DMA = hal_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
-    GDMA_ChannelTypeDef *TX_DMA = hal_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
+    GDMA_ChannelTypeDef *RX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->RX_DMA_channel_num);
+    GDMA_ChannelTypeDef *TX_DMA = rtl_idu_get_dma_channel_int(dma_cfg->TX_DMA_channel_num);
     uint32_t rx_block_num = 0;
     if (DMA_compressed_data_size_word >= 65535)
     {
@@ -152,7 +173,7 @@ IMDC_ERROR hal_idu_decode_direct_int(uint8_t *file, IMDC_decode_range *range,
         GDMA_DataSize_Word;                   // 32 bit width for source transaction
     RX_GDMA_InitStruct.GDMA_SourceAddr          = (uint32_t)start_line_address;
     RX_GDMA_InitStruct.GDMA_DestinationAddr     = (uint32_t)(&IMDC->RX_FIFO);
-    hal_idu_rx_handshake_init(&RX_GDMA_InitStruct);
+    rtl_idu_rx_handshake_init(&RX_GDMA_InitStruct);
     if (rx_block_num)
     {
         RX_GDMA_InitStruct.GDMA_BufferSize = 65535;
@@ -189,7 +210,7 @@ IMDC_ERROR hal_idu_decode_direct_int(uint8_t *file, IMDC_decode_range *range,
                 RX_LLI[i].DAR = (uint32_t)(&IMDC->RX_FIFO);
                 RX_LLI[i].LLP = (uint32_t)&RX_LLI[i + 1];
                 /* configure low 32 bit of CTL register */
-                RX_LLI[i].CTL_LOW = hal_idu_get_dma_ctl_low_int(RX_DMA);
+                RX_LLI[i].CTL_LOW = rtl_idu_get_dma_ctl_low_int(RX_DMA);
                 /* configure high 32 bit of CTL register */
                 RX_LLI[i].CTL_HIGH = 65535;
             }

@@ -35,7 +35,6 @@ if GetDepend(['CONFIG_REALTEK_RAMLESS_QSPI']):
 if  GetDepend(['CONFIG_REALTEK_IDU']) :
     src += ['driver/idu/src/device/rtl_common/rtl_idu.c']
     src += ['driver/idu/src/hal/rtl/hal_idu.c']
-    src += ['driver/idu/src/hal/' + RTK_IC_TYPE + '/hal_idu_int.c']
     src += ['driver/idu/src/device/' + RTK_IC_TYPE + '/rtl_idu_int.c']
 
 if GetDepend(['CONFIG_REALTEK_SEGCOM']):
@@ -48,7 +47,6 @@ include_path += [cwd,
         cwd + '/driver/idu/inc',
         cwd + '/driver/idu/src/device/' + RTK_IC_TYPE,
         cwd + '/driver/idu/inc',
-        cwd + '/driver/idu/src/hal/' + RTK_IC_TYPE,
         cwd + '/driver/mipi/inc',
         cwd + '/driver/ppe/inc/' + RTK_IC_TYPE,
         cwd + '/driver/ppe/src/device/' + RTK_IC_TYPE,
