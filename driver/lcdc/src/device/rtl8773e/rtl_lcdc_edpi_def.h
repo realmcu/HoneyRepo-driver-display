@@ -25,18 +25,18 @@ extern "C" {
  *============================================================================*/
 typedef struct
 {
-    __IO uint32_t  RESERVED1;                               /*!< 0x00 */
+    __I  uint32_t  RESERVED1;                               /*!< 0x00 */
     __IO uint32_t  EDPI_SYNC_WIDTH;                         /*!< 0x04 */
     __IO uint32_t  EDPI_ABACK_PORCH;                        /*!< 0x08 */
     __IO uint32_t  EDPI_AACTIVE;                            /*!< 0x0C */
     __IO uint32_t  EDPI_TOTAL;                              /*!< 0x10 */
     __IO uint32_t  EDPI_SYNC_POL;                           /*!< 0x14 */
     __IO uint32_t  EDPI_INT_MASK;                           /*!< 0x18 */
-    __IO uint32_t  EDPI_INT_FLAG;                           /*!< 0x1C */
+    __I  uint32_t  EDPI_INT_FLAG;                           /*!< 0x1C */
     __IO uint32_t  EDPI_INT_CLR;                            /*!< 0x20 */
     __IO uint32_t  EDPI_LINE_INT_POS;                       /*!< 0x24 */
-    __IO uint32_t  EDPI_PIXEL_POS;                          /*!< 0x28 */
-    __IO uint32_t  EDPI_SYNC_STATUS;                        /*!< 0x2C */
+    __I  uint32_t  EDPI_PIXEL_POS;                          /*!< 0x28 */
+    __I  uint32_t  EDPI_SYNC_STATUS;                        /*!< 0x2C */
     __IO uint32_t  EDPI_COLOR_MAP;                          /*!< 0x30 */
     __IO uint32_t  EDPI_OP_MODE;                            /*!< 0x34 */
     __IO uint32_t  EDPI_VIDEO_CTL;                          /*!< 0x38 */
@@ -44,9 +44,9 @@ typedef struct
     __IO uint32_t  EDPI_CMD_MAX_LATENCY;                    /*!< 0x40 */
     __IO uint32_t  DPI_LINNE_BUFFER_PIXEL_NUM;              /*!< 0x44 */
     __IO uint32_t  DPI_LINE_BUFFER_PIXEL_THRESHOLD;         /*!< 0x48 */
-    __IO uint32_t  RESERVED2;                               /*!< 0x4C */
+    __I  uint32_t  RESERVED2;                               /*!< 0x4C */
     __IO uint32_t  EDPI_DIV_PAR;                            /*!< 0x50 */
-    __IO uint32_t  RESERVED3;                               /*!< 0x54 */
+    __I  uint32_t  RESERVED3;                               /*!< 0x54 */
     __IO uint32_t  EDPI_RGB_COMPATIBLE;                     /*!< 0x58 */
 } LCDC_EDPI_TypeDef;
 

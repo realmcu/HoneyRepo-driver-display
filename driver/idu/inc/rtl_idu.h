@@ -78,9 +78,16 @@ typedef enum
 
 typedef enum
 {
+#ifdef RTL87x3EU
+    PIXEL_SIZE_8BIT = 0x00,
+    PIXEL_SIZE_16BIT = 0x01,
+    PIXEL_SIZE_24BIT = 0x02,
+    PIXEL_SIZE_32BIT = 0x03,
+#else
     PIXEL_SIZE_16BIT = 0x00,
     PIXEL_SIZE_24BIT = 0x01,
     PIXEL_SIZE_32BIT = 0x02,
+#endif
 } IDU_PIXEL_SIZE;
 
 typedef enum
@@ -256,10 +263,18 @@ typedef union
  * \{
  * \ingroup     IDU_Exported_Constants
  */
+#ifdef RTL87x3EU
+#define IDU_PIXEL_8BIT                    (0)
+#define IDU_PIXEL_16BIT                   (1)
+#define IDU_PIXEL_24BIT                   (2)
+#define IDU_PIXEL_32BIT                   (3)
+#define IS_IDU_PIXEL_BYTES(NUM)           (((NUM) == IDU_PIXEL_8BIT) || ((NUM) == IDU_PIXEL_16BIT) || ((NUM) == IDU_PIXEL_24BIT) || ((NUM) == IDU_PIXEL_32BIT))
+#else
 #define IDU_PIXEL_16BIT                   (0)
 #define IDU_PIXEL_24BIT                   (BIT(0))
 #define IDU_PIXEL_32BIT                   (BIT(1))
 #define IS_IDU_PIXEL_BYTES(NUM)           (((NUM) == IDU_PIXEL_16BIT) || ((NUM) == IDU_PIXEL_24BIT) || ((NUM) == IDU_PIXEL_32BIT))
+#endif
 
 /** End of IDU_PIXEL_SIZE
   * \}
