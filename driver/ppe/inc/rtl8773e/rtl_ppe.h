@@ -194,7 +194,7 @@ typedef enum
 
 typedef enum
 {
-    PPE_HS_IMDC_Tx,
+    PPE_HS_IDU_Tx,
 } PPE_HW_HANDSHAKE_INDEX;
 
 typedef enum

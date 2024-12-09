@@ -14,7 +14,7 @@
 /*============================================================================*
  *                        Header Files
  *============================================================================*/
-#include "rtl_PPE.h"
+#include "rtl_ppe.h"
 #include "string.h"
 #include "os_sync.h"
 #include "math.h"
@@ -708,7 +708,7 @@ PPE_err PPE_Blit(ppe_buffer_t *target, ppe_buffer_t *image, ppe_matrix_t *matrix
     PPE_input_layer2_init.MultiFrame_LLP_En               = DISABLE;
     PPE_input_layer2_init.LayerBus_Inc                    = PPE_AWBURST_INC;
     PPE_input_layer2_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
     PPE_input_layer2_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
     PPE_input_layer2_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
     PPE_input_layer2_init.Layer_Window_Xmin               = 0;
@@ -748,7 +748,7 @@ PPE_err PPE_Blit(ppe_buffer_t *target, ppe_buffer_t *image, ppe_matrix_t *matrix
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -785,7 +785,7 @@ PPE_err PPE_Blit(ppe_buffer_t *target, ppe_buffer_t *image, ppe_matrix_t *matrix
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -938,7 +938,7 @@ PPE_err PPE_Blit_Inverse(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_matrix_t *inv
     PPE_input_layer2_init.MultiFrame_LLP_En               = DISABLE;
     PPE_input_layer2_init.LayerBus_Inc                    = PPE_AWBURST_INC;
     PPE_input_layer2_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
     PPE_input_layer2_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
     PPE_input_layer2_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
     PPE_input_layer2_init.Layer_Window_Xmin               = src->win_x_min;
@@ -979,7 +979,7 @@ PPE_err PPE_Blit_Inverse(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_matrix_t *inv
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -1017,7 +1017,7 @@ PPE_err PPE_Blit_Inverse(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_matrix_t *inv
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -1110,7 +1110,7 @@ PPE_err PPE_Mask(ppe_buffer_t *dst, uint32_t color, ppe_rect_t *rect)
     PPE_input_layer2_init.MultiFrame_LLP_En               = DISABLE;
     PPE_input_layer2_init.LayerBus_Inc                    = PPE_AWBURST_INC;
     PPE_input_layer2_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
     PPE_input_layer2_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
     PPE_input_layer2_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
     PPE_input_layer2_init.Layer_Window_Xmin               = 0;
@@ -1149,7 +1149,7 @@ PPE_err PPE_Mask(ppe_buffer_t *dst, uint32_t color, ppe_rect_t *rect)
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -1186,7 +1186,7 @@ PPE_err PPE_Mask(ppe_buffer_t *dst, uint32_t color, ppe_rect_t *rect)
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_16;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -1294,7 +1294,7 @@ PPE_err PPE_Blend_Multi(ppe_buffer_t *dst, ppe_buffer_t *src_1,
         PPE_input_layer2_init.MultiFrame_LLP_En               = DISABLE;
         PPE_input_layer2_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer2_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer2_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer2_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_1;
         PPE_input_layer2_init.Layer_Window_Xmin               = src_1->win_x_min;
@@ -1368,7 +1368,7 @@ PPE_err PPE_Blend_Multi(ppe_buffer_t *dst, ppe_buffer_t *src_1,
         PPE_input_layer2_init.MultiFrame_LLP_En               = DISABLE;
         PPE_input_layer2_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer2_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer2_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer2_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_1;
         PPE_input_layer2_init.Layer_Window_Xmin               = src_2->win_x_min;
@@ -1442,7 +1442,7 @@ PPE_err PPE_Blend_Multi(ppe_buffer_t *dst, ppe_buffer_t *src_1,
         PPE_input_layer2_init.MultiFrame_LLP_En               = DISABLE;
         PPE_input_layer2_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer2_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer2_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer2_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_1;
         PPE_input_layer2_init.Layer_Window_Xmin               = src_3->win_x_min;
@@ -1486,7 +1486,7 @@ PPE_err PPE_Blend_Multi(ppe_buffer_t *dst, ppe_buffer_t *src_1,
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_1;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -1523,7 +1523,7 @@ PPE_err PPE_Blend_Multi(ppe_buffer_t *dst, ppe_buffer_t *src_1,
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_1;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -1567,7 +1567,7 @@ PPE_err PPE_Blend_Multi(ppe_buffer_t *dst, ppe_buffer_t *src_1,
 }
 
 #if IDU_HANDSHAKE
-#include "rtl_imdc.h"
+#include "rtl_idu.h"
 PPE_err PPE_Blend_Handshake(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_rect_t *rect)
 {
     if (dst->address == NULL)
@@ -1608,7 +1608,7 @@ PPE_err PPE_Blend_Handshake(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_rect_t *re
     PPE_InputLayer_enable(PPE_INPUT_2, ENABLE);           // logic enable of layer
     PPE_InputLayer_Init_Typedef PPE_input_layer2_init;
     PPE_InputLayer_StructInit(PPE_INPUT_2, &PPE_input_layer2_init);
-    PPE_input_layer2_init.Layer_Address                   = (uint32_t)&IMDC->TX_FIFO;
+    PPE_input_layer2_init.Layer_Address                   = (uint32_t)&IDU->TX_FIFO;
     PPE_input_layer2_init.Pic_Height                      = (uint32_t)src->height;
     PPE_input_layer2_init.Pic_Width                       = (uint32_t)src->width;
     PPE_input_layer2_init.Line_Length                     = PPE_input_layer2_init.Pic_Width *
@@ -1633,7 +1633,7 @@ PPE_err PPE_Blend_Handshake(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_rect_t *re
     PPE_input_layer2_init.MultiFrame_LLP_En               = DISABLE;
     PPE_input_layer2_init.LayerBus_Inc                    = PPE_AWBURST_FIXED;
     PPE_input_layer2_init.Layer_HW_Handshake_En           = PPE_HW_HS_ENABLE;
-    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+    PPE_input_layer2_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
     PPE_input_layer2_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
     PPE_input_layer2_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_1;
     PPE_input_layer2_init.Layer_Window_Xmin               = src->win_x_min;
@@ -1674,7 +1674,7 @@ PPE_err PPE_Blend_Handshake(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_rect_t *re
         PPE_input_layer1_init.Read_Matrix_Size                = PPV2_READ_MATRIX_1X1;
         PPE_input_layer1_init.LayerBus_Inc                    = PPE_AWBURST_INC;
         PPE_input_layer1_init.Layer_HW_Handshake_En           = PPE_HW_HS_DISABLE;
-        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IMDC_Tx;
+        PPE_input_layer1_init.Layer_HW_Handshake_Index        = PPE_HS_IDU_Tx;
         PPE_input_layer1_init.Layer_HW_Handshake_Polarity     = PPE_HW_HS_ACTIVE_HIGH;
         PPE_input_layer1_init.Layer_HW_Handshake_MsizeLog     = PPE_MSIZE_1;
         PPE_input_layer1_init.Layer_Window_Xmin               = 0;
@@ -1710,8 +1710,8 @@ PPE_err PPE_Blend_Handshake(ppe_buffer_t *dst, ppe_buffer_t *src, ppe_rect_t *re
     PPE_ResultLayer0_Init.MultiFrame_Reload_En            = DISABLE;
     PPE_ResultLayer0_Init.MultiFrame_LLP_En               = DISABLE;
     PPE_ResultLayer_Init(&PPE_ResultLayer0_Init);
-    IMDC_Cmd(ENABLE);// logic function enable
-    IMDC_Run(ENABLE);
+    IDU_Cmd(ENABLE);// logic function enable
+    IDU_Run(ENABLE);
     PPE_Cmd(ENABLE);
     while (((PPE_REG_GLB_STATUS_TypeDef)PPE->REG_GLB_STATUS).b.run_state);
     return PPE_SUCCESS;

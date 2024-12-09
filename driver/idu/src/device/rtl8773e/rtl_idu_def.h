@@ -11,8 +11,8 @@
 * *********************************************************************************************************
 */
 
-#ifndef RTL_IMDC_REG_H
-#define RTL_IMDC_REG_H
+#ifndef RTL_IDU_REG_H
+#define RTL_IDU_REG_H
 
 #ifdef  __cplusplus
 extern "C" {
@@ -21,16 +21,16 @@ extern "C" {
 #include "rtl876x.h"
 #include "stdint.h"
 /*============================================================================*
- *                         IMDC Defines
+ *                         IDU Defines
  *============================================================================*/
-#define IMDC_REG_BASE                  0x40090000UL
+#define IDU_REG_BASE                  0x40090000UL
 /*============================================================================*
- *                         IMDC Registers Memory Map
+ *                         IDU Registers Memory Map
  *============================================================================*/
 typedef struct
 {
-    __IO uint32_t IMDC_CTL0;                                    /*< 0x00 */
-    __IO uint32_t IMDC_CTL1;                                    /*< 0x04 */
+    __IO uint32_t IDU_CTL0;                                    /*< 0x00 */
+    __IO uint32_t IDU_CTL1;                                    /*< 0x04 */
     __IO uint32_t PIC_DECOMPRESS_TOTAL_PIXEL;                   /*< 0x08 */
     __IO uint32_t PIC_RAW_WIDTH;                                /*< 0x0C */
     __IO uint32_t TX_COLUMN_START;                              /*< 0x10 */
@@ -40,7 +40,7 @@ typedef struct
     __IO uint32_t YUV_SBF_CTL;                                  /*< 0x20 */
     __IO uint32_t VERTICAL_COUNTER;                             /*< 0x24 */
     __IO uint32_t HORIZONTAL_COUNTER;                           /*< 0x28 */
-    __IO uint32_t IMDC_OUTPUT_COUNTER;                          /*< 0x2C */
+    __IO uint32_t IDU_OUTPUT_COUNTER;                          /*< 0x2C */
     __IO uint32_t RESERVED1;                                    /*< 0x30 */
     __IO uint32_t COMPRESSED_DATA_SIZE;                         /*< 0x34 */
     __IO uint32_t RX_FIFO;                                      /*< 0x38 */
@@ -56,18 +56,18 @@ typedef struct
     __IO uint32_t INT_RAW_STATUS;                               /*< 0x60 */
     __IO uint32_t INT_STATUS;                                   /*< 0x64 */
     __IO uint32_t INT_CLEAR;                                    /*< 0x68 */
-} IMDC_TypeDef;
+} IDU_TypeDef;
 
 /*============================================================================*
- *                         IMDC Declaration
+ *                         IDU Declaration
  *============================================================================*/
 
 /*============================================================================*
- *                         IMDC Private Types
+ *                         IDU Private Types
  *============================================================================*/
 
 /*============================================================================*
- *                         IMDC Registers and Field Descriptions
+ *                         IDU Registers and Field Descriptions
  *============================================================================*/
 /* 0x00
     0       R/W    idu_reset_decompress_start           0x0
@@ -88,7 +88,7 @@ typedef union
         uint32_t idu_algorithm: 2;
         const uint32_t reserved_0: 22;
     } b;
-} IMDC_CTL0_TypeDef;
+} IDU_CTL0_TypeDef;
 
 
 
@@ -117,7 +117,7 @@ typedef union
         const uint32_t idu_internal_buffer_empty: 1;
         uint32_t head_throw_away_byte_num: 2;
     } b;
-} IMDC_CTL1_TypeDef;
+} IDU_CTL1_TypeDef;
 
 
 
@@ -275,7 +275,7 @@ typedef union
     {
         const uint32_t idu_output_counter: 32;
     } b;
-} IMDC_OUTPUT_COUNTER_TypeDef;
+} IDU_OUTPUT_COUNTER_TypeDef;
 
 
 
@@ -593,4 +593,4 @@ typedef union
 }
 #endif /* __cplusplus */
 
-#endif /* RTL_IMDC_REG_H */
+#endif /* RTL_IDU_REG_H */

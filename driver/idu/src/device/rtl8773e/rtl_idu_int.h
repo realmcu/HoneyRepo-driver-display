@@ -17,9 +17,9 @@ void rtl_idu_rx_handshake_init(GDMA_InitTypeDef *init_struct);
 
 void rtl_idu_tx_handshake_init(GDMA_InitTypeDef *init_struct);
 
-void rtl_idu_hw_handshake_init(IMDC_InitTypeDef *init_struct);
+void rtl_idu_hw_handshake_init(IDU_InitTypeDef *init_struct);
 
-void rtl_idu_fill_hw_hs_reg_int(IMDC_CTL1_TypeDef *reg, IMDC_InitTypeDef *IMDC_init_struct);
+void rtl_idu_fill_hw_hs_reg_int(IDU_CTL1_TypeDef *reg, IDU_InitTypeDef *IDU_init_struct);
 
-IMDC_ERROR rtl_idu_decode_direct_int(uint8_t *file, IMDC_decode_range *range,
-                                      IMDC_DMA_config *dma_cfg, GDMA_LLIDef *RX_LLI);
+IDU_ERROR rtl_idu_decode_direct_int(uint8_t *file, IDU_decode_range *range,
+                                      IDU_DMA_config *dma_cfg, GDMA_LLIDef *RX_LLI);
