@@ -1,2 +1,11 @@
 # Copyright (c) 2024 Realtek Semiconductor Corp.
 # SPDX-License-Identifier: Apache-2.0
+
+menu "Realtek Display Driver"
+
+config REALTEK_DISPLAY
+	bool "Enable Realtek Display Driver" 
+	default y
+	help
+		This config for realtek display driver
+endmenu
