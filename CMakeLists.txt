@@ -12,7 +12,7 @@ message(STATUS "CONFIG_REALTEK_DISPLAY is set to: ${CONFIG_REALTEK_DISPLAY}")
 
 if(ZEPHYR_BASE)
   add_subdirectory_ifdef(CONFIG_REALTEK_DISPLAY driver)
-  add_subdirectory_ifdef(CONFIG_REALTEK_DISPLAY zephyr-driver)
+  #add_subdirectory_ifdef(CONFIG_REALTEK_DISPLAY zephyr-driver)
 else()
   add_subdirectory_ifdef(CONFIG_REALTEK_DISPLAY driver)
 endif()

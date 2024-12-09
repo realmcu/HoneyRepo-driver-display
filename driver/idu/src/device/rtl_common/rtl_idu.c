@@ -17,6 +17,7 @@
 #include "stdio.h"
 #include "rtl_idu.h"
 #include "rtl_idu_int.h"
+#include "display_st7789v.h"
 
 /*============================================================================*
  *                           Public Functions
@@ -151,7 +152,7 @@ uint32_t IDU_GetCompressedSize(void)
 }
 
 uint32_t IDU_Get_Line_Start_Address(uint32_t compressed_start_address,
-                                     uint32_t line_number)
+                                    uint32_t line_number)
 {
     // line number start from0 and ends to (raw_pic_height-1)
     // return the absolute address of line
@@ -187,11 +188,11 @@ void IDU_Init(IDU_InitTypeDef *IDU_init_struct)
     IDU->TX_COLUMN_START = IDU_struct_init->tx_column_start;
     IDU->TX_COLUMN_END = IDU_struct_init->tx_column_end;
     IDU->DECOMPRESS_OUTPUT_PIXEL = (
-                                        IDU_struct_init->pic_decompress_height\
-                                        * (IDU_struct_init->tx_column_end - IDU_struct_init->tx_column_start + 1)
-                                    );
+                                       IDU_struct_init->pic_decompress_height\
+                                       * (IDU_struct_init->tx_column_end - IDU_struct_init->tx_column_start + 1)
+                                   );
     IDU->PIC_DECOMPRESS_TOTAL_PIXEL = IDU_struct_init->pic_raw_width *
-                                       IDU_struct_init->pic_decompress_height;
+                                      IDU_struct_init->pic_decompress_height;
 
     RLE_FASTLZ_CTL_TypeDef idu_reg_0x1c = {.d32 = IDU->RLE_FASTLZ_CTL};
     idu_reg_0x1c.b.pic_length1_size = IDU_struct_init->pic_length1_size;
@@ -274,9 +275,9 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
         return IDU_ERROR_INVALID_PARAM;
     }
     uint32_t start_line_address = IDU_Get_Line_Start_Address(compressed_data_start_address,
-                                                              decompress_start_line);
+                                                             decompress_start_line);
     uint32_t compressed_data_size = IDU_Get_Line_Start_Address(compressed_data_start_address,
-                                                                decompress_end_line + 1) - start_line_address;
+                                                               decompress_end_line + 1) - start_line_address;
     uint32_t decompressed_data_size = (decompress_end_line - decompress_start_line + 1) *
                                       (decompress_end_column - decompress_start_column + 1)\
                                       * (header->algorithm_type.pixel_bytes + 2);
@@ -291,12 +292,12 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
     IDU_struct_init.tx_column_end             = decompress_end_column ;
     IDU_struct_init.compressed_data_size      = compressed_data_size;
     IDU_struct_init.pic_length2_size          = (IDU_RLE_RUNLENGTH_SIZE)
-                                                 header->algorithm_type.feature_2;
+                                                header->algorithm_type.feature_2;
     IDU_struct_init.pic_length1_size          = (IDU_RLE_RUNLENGTH_SIZE)
-                                                 header->algorithm_type.feature_1;
+                                                header->algorithm_type.feature_1;
     IDU_struct_init.yuv_blur_bit              = (IDU_YUV_BLUR_BIT)header->algorithm_type.feature_2;
     IDU_struct_init.yuv_sample_type           = (IDU_YUV_SAMPLE_TYPE)
-                                                 header->algorithm_type.feature_1;
+                                                header->algorithm_type.feature_1;
     IDU_struct_init.rx_fifo_dma_enable        = (uint32_t)ENABLE;
     IDU_struct_init.tx_fifo_dma_enable        = (uint32_t)ENABLE;
     IDU_struct_init.rx_fifo_dma_threshold     = IDU_RX_FIFO_DEPTH / 2;
@@ -492,7 +493,7 @@ IDU_ERROR IDU_Decode(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma
 }
 
 IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *dma_cfg,
-                          IDU_INT_CFG_t int_cfg)
+                        IDU_INT_CFG_t int_cfg)
 {
     uint32_t decompress_start_line;
     uint32_t decompress_end_line;
@@ -541,9 +542,9 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
         return IDU_ERROR_INVALID_PARAM;
     }
     uint32_t start_line_address = IDU_Get_Line_Start_Address(compressed_data_start_address,
-                                                              decompress_start_line);
+                                                             decompress_start_line);
     uint32_t compressed_data_size = IDU_Get_Line_Start_Address(compressed_data_start_address,
-                                                                decompress_end_line + 1) - start_line_address;
+                                                               decompress_end_line + 1) - start_line_address;
     uint32_t decompressed_data_size = (decompress_end_line - decompress_start_line + 1) *
                                       (decompress_end_column - decompress_start_column + 1)\
                                       * (header->algorithm_type.pixel_bytes + 2);
@@ -558,12 +559,12 @@ IDU_ERROR IDU_Decode_Ex(uint8_t *file, IDU_decode_range *range, IDU_DMA_config *
     IDU_struct_init.tx_column_end             = decompress_end_column ;
     IDU_struct_init.compressed_data_size      = compressed_data_size;
     IDU_struct_init.pic_length2_size          = (IDU_RLE_RUNLENGTH_SIZE)
-                                                 header->algorithm_type.feature_2;
+                                                header->algorithm_type.feature_2;
     IDU_struct_init.pic_length1_size          = (IDU_RLE_RUNLENGTH_SIZE)
-                                                 header->algorithm_type.feature_1;
+                                                header->algorithm_type.feature_1;
     IDU_struct_init.yuv_blur_bit              = (IDU_YUV_BLUR_BIT)header->algorithm_type.feature_2;
     IDU_struct_init.yuv_sample_type           = (IDU_YUV_SAMPLE_TYPE)
-                                                 header->algorithm_type.feature_1;
+                                                header->algorithm_type.feature_1;
     IDU_struct_init.rx_fifo_dma_enable        = (uint32_t)ENABLE;
     IDU_struct_init.tx_fifo_dma_enable        = (uint32_t)ENABLE;
     IDU_struct_init.rx_fifo_dma_threshold     = IDU_RX_FIFO_DEPTH / 2;
